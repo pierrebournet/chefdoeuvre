@@ -10,6 +10,10 @@ import { Session } from './sessions/entities/session.entity';
 import { ExercisesModule } from './exercises/exercises.module';
 import { Exercise } from './exercises/entities/exercises.entity';
 import { UsersModule } from './users/users.module';
+import { PaymentModule } from './payment/payment.module';
+import { AdressModule } from './adress/adress.module';
+import { CartItemModule } from './cart-item/cart-item.module';
+import { CartModule } from './cart/cart.module';
 import { CategoryModule } from './category/category.module';
 import { OrderModule } from './order/order.module';
 import { OrderlineModule } from './orderline/orderline.module';
@@ -29,11 +33,11 @@ import { APP_PIPE } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common/pipes';
 import { ServeStaticModule } from '@nestjs/serve-static/dist';
 import { join } from 'path';
-import { Category } from './category/category.entity';
-import { Order } from './order/order.entity';
-import { OrderLine } from './orderline/orderline.entity';
-import { Product } from './product/products.entity';
-import { Users } from './user/users.entity';
+import { Category } from '../src/category/entities/category.entity';
+import { Order } from '../src/order/entities/order.entity';
+import { OrderLine } from '../src/orderline/entities/orderline.entity';
+import { Product } from '../src/product/entities/product.entity';
+import { Users } from '../src/users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
 
@@ -63,7 +67,11 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthModule,
     ProductModule,
-    OrderlineModule, 
+    OrderlineModule,
+    CartModule,
+    CartItemModule,
+    AdressModule,
+    PaymentModule, 
   ],
   controllers: [AppController],
   providers: [AppService, {provide: APP_PIPE, useClass: ValidationPipe}
