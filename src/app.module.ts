@@ -1,81 +1,38 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TrainingsModule } from './trainings/trainings.module';
-import { Training } from './trainings/entities/training.entity';
-import { SessionsModule } from './sessions/sessions.module';
-import { Session } from './sessions/entities/session.entity';
-import { ExercisesModule } from './exercises/exercises.module';
-import { Exercise } from './exercises/entities/exercises.entity';
-import { UsersModule } from './users/users.module';
-import { PaymentModule } from './payment/payment.module';
-import { AdressModule } from './adress/adress.module';
-import { CartItemModule } from './cart-item/cart-item.module';
-import { CartModule } from './cart/cart.module';
-import { CategoryModule } from './category/category.module';
+import { UserModule } from '../src/user/user.module';
 import { OrderModule } from './order/order.module';
-import { OrderlineModule } from './orderline/orderline.module';
+import { OrderLineModule } from './orderline/orderline.module';
 import { ProductModule } from './product/product.module';
-import { User } from './users/entities/user.entity';
-import { AuthModule } from './auth/auth.module';
-import { FriendshipsModule } from './friendships/friendships.module';
-import { Friendship } from './friendships/entities/friendship.entity';
-import { ArticlesModule } from './articles/articles.module';
-import { Article } from './articles/entities/article.entity';
-import { CommentsModule } from './comments/comments.module';
-import { Comment } from './comments/entities/comment.entity';
-import { ImagesModule } from './images/images.module';
-import { Image } from './images/entities/image.entity';
-import { MulterModule } from '@nestjs/platform-express';
-import { APP_PIPE } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common/pipes';
-import { ServeStaticModule } from '@nestjs/serve-static/dist';
-import { join } from 'path';
-import { Category } from '../src/category/entities/category.entity';
-import { Order } from '../src/order/entities/order.entity';
-import { OrderLine } from '../src/orderline/entities/orderline.entity';
-import { Product } from '../src/product/entities/product.entity';
-import { Users } from '../src/users/entities/user.entity';
-import { UsersModule } from './users/users.module';
-
-
+import { CategoryModule } from './category/category.module';
+import { CartModule } from './cart/cart.module';
+import { CartItemModule } from './cart-item/cart-item.module';
+import { AddressModule } from './address/address.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT!,
-      username: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      entities: [Category, Order, OrderLine, Product, Users],
+      host: 'localhost',
+      port: 5432,
+      username: 'your_user',
+      password: 'your_password',
+      database: 'your_database',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    MulterModule.register({
-        dest: './upload',
-    }),
-   
-      ServeStaticModule.forRoot({
-        rootPath: join(__dirname, `..`, `upload`)
-      }),
-    CategoryModule,
+    UserModule,
     OrderModule,
-    UsersModule,
-    AuthModule,
+    OrderLineModule,
     ProductModule,
-    OrderlineModule,
+    CategoryModule,
     CartModule,
     CartItemModule,
-    AdressModule,
-    PaymentModule, 
+    AddressModule,
+    PaymentModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, {provide: APP_PIPE, useClass: ValidationPipe}
-  
-  ]
+  controllers: [],
+  providers: [],
 })
-export class AppModule { }
+export class AppModule {}

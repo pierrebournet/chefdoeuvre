@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateOrderlineDto } from './create-orderline.dto';
-
-export class UpdateOrderlineDto extends PartialType(CreateOrderlineDto) {}
+// update-order-item.dto.ts
+export class UpdateOrderItemDto {
+    quantity?: number;
+    productId?: number;
+    orderId?: number;
+  }
+  

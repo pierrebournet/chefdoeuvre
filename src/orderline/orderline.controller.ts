@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { OrderlineService } from './orderline.service';
-import { CreateOrderlineDto } from './dto/create-orderline.dto';
-import { UpdateOrderlineDto } from './dto/update-orderline.dto';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { OrderLineService } from './orderline.service';
+import { OrderLine } from './entities/orderline.entity';
 
 @Controller('orderline')
-export class OrderlineController {
-  constructor(private readonly orderlineService: OrderlineService) {}
+export class OrderLineController {
+  constructor(private readonly orderLineService: OrderLineService) {}
 
   @Post()
-  create(@Body() createOrderlineDto: CreateOrderlineDto) {
-    return this.orderlineService.create(createOrderlineDto);
+  create(@Body() createOrderLineDto: OrderLine): Promise<OrderLine> {
+    return this.orderLineService.create(createOrderLineDto);
   }
 
   @Get()
-  findAll() {
-    return this.orderlineService.findAll();
+  findAll(): Promise<OrderLine[]> {
+    return this.orderLineService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderlineService.findOne(+id);
+  findOne(@Param('id') id: number): Promise<OrderLine> {
+    return this.orderLineService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderlineDto: UpdateOrderlineDto) {
-    return this.orderlineService.update(+id, updateOrderlineDto);
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateOrderLineDto: OrderLine): Promise<OrderLine> {
+    return this.orderLineService.update(id, updateOrderLineDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderlineService.remove(+id);
+  delete(@Param('id') id: number): Promise<void> {
+    return this.orderLineService.delete(id);
   }
 }

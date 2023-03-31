@@ -1,6 +1,11 @@
-import { Order } from 'src/order/entities/order.entity';
-import { Product } from 'src/product/entities/product.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+} from 'typeorm';
+import { Order } from '../src/order/entities/order.entity';
+import { Product } from '../product/entities/product.entity';
 
 @Entity()
 export class OrderLine {
@@ -9,9 +14,6 @@ export class OrderLine {
 
   @Column()
   quantity: number;
-
-  @Column()
-  unit_price: number;
 
   @ManyToOne(() => Product, (product) => product.orderLines)
   product: Product;

@@ -22,8 +22,10 @@ export class CategoryService {
   }
 
   async findOne(id: number): Promise<Category> {
-    return await this.categoryRepository.findOneOrFail({ id });
+    return await this.categoryRepository.findOneOrFail({ where: { id } });
   }
+  
+  
   
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {

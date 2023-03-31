@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { OrderlineService } from './orderline.service';
-import { OrderlineController } from './orderline.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrderLineService } from './orderline.service';
+import { OrderLineController } from './orderline.controller';
+import { OrderLine } from './entities/orderline.entity';
 
 @Module({
-  controllers: [OrderlineController],
-  providers: [OrderlineService]
+  imports: [TypeOrmModule.forFeature([OrderLine])],
+  controllers: [OrderLineController],
+  providers: [OrderLineService],
 })
-export class OrderlineModule {}
+export class OrderLineModule {}
