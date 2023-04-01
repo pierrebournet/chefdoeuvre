@@ -1,28 +1,39 @@
-import { Category } from 'src/category/entities/category.entity';
-import { OrderLine } from 'src/orderline/entities/orderline.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
+import { Category } from '../../category/entities/category.entity';
 
-@Entity()
+@Entity('product')
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column()
-  description: string;
-
-  @Column()
-  price: number;
-
-  @Column()
-  imageUrl: string;
-
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;
 
-  @OneToMany(() => OrderLine, (orderLine) => orderLine.product)
-  orderLines: OrderLine[];
-}
+  @Column()
+  name: string;
 
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
+
+  @Column()
+  quantity: number;
+
+  @Column({ nullable: true })
+  image_url: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+}

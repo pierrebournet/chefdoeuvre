@@ -1,28 +1,46 @@
-import { OrderLine } from 'src/orderline/entities/orderline.entity';
-import { Users } from 'src/users/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { Payment } from '../../payment/entities/payment.entity';
+import { Address } from '../../adress/entities/adress.entity';
+import { OrderLine } from '../../orderline/entities/orderline.entity';
 
-@Entity()
+@Entity('order')
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  date: Date;
+  @ManyToOne(() => User, (user) => user.orders)
+  user: User;
+
+  @ManyToOne(() => Payment, (payment) => payment.order, { nullable: true })
+  payment: Payment;
+
+  @ManyToOne(() => Address)
+  shipping_address: Address;
+
+  @ManyToOne(() => Address)
+  billing_address: Address;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  total: number;
 
   @Column()
   status: string;
 
-  @Column()
-  shipping_fee: number;
+  @CreateDateColumn()
+  created_at: Date;
 
-  @Column()
-  taxes: number;
-
-  @ManyToOne(() => Users, (user) => user.orders)
-  user: Users;
+  @UpdateDateColumn()
+  updated_at: Date;
 
   @OneToMany(() => OrderLine, (orderLine) => orderLine.order)
   orderLines: OrderLine[];
 }
-

@@ -2,22 +2,33 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
+  UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { Order } from '../src/order/entities/order.entity';
-import { Product } from '../product/entities/product.entity';
+import { Order } from '../../order/entities/order.entity';
+import { Product } from '../../product/entities/product.entity';
 
-@Entity()
+@Entity('order_line')
 export class OrderLine {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ManyToOne(() => Order, (order) => order.orderLines)
+  order: Order;
+
+  @ManyToOne(() => Product)
+  product: Product;
+
   @Column()
   quantity: number;
 
-  @ManyToOne(() => Product, (product) => product.orderLines)
-  product: Product;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
 
-  @ManyToOne(() => Order, (order) => order.orderLines)
-  order: Order;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

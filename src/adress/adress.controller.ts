@@ -1,34 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AdressService } from './adress.service';
-import { CreateAdressDto } from './dto/create-adress.dto';
-import { UpdateAdressDto } from './dto/update-adress.dto';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { AddressService } from './address.service';
+import { CreateAddressDto } from './dto/create-address.dto';
+import { UpdateAddressDto } from './dto/update-address.dto';
+import { Address } from '../entities/
 
-@Controller('adress')
-export class AdressController {
-  constructor(private readonly adressService: AdressService) {}
+@Controller('address')
+export class AddressController {
+  constructor(private readonly addressService: AddressService) {}
 
   @Post()
-  create(@Body() createAdressDto: CreateAdressDto) {
-    return this.adressService.create(createAdressDto);
+  create(@Body() createAddressDto: CreateAddressDto): Promise<Address> {
+    return this.addressService.create(createAddressDto);
   }
 
   @Get()
-  findAll() {
-    return this.adressService.findAll();
+  findAll(): Promise<Address[]> {
+    return this.addressService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adressService.findOne(+id);
+  findOne(@Param('id') id: number): Promise<Address> {
+    return this.addressService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdressDto: UpdateAdressDto) {
-    return this.adressService.update(+id, updateAdressDto);
+  @Put(':id')
+  update(
+    @Param('id') id: number,
+    @Body() updateAddressDto: UpdateAddressDto,
+  ): Promise<Address> {
+    return this.addressService.update(id, updateAddressDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adressService.remove(+id);
+  delete(@Param('id') id: number): Promise<void> {
+    return this.addressService.delete(id);
   }
 }

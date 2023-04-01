@@ -1,18 +1,44 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PaymentService } from './payment.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreatePaymentDto } from './dto/create-payment.dto';
+import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { Payment } from './entities/payment.entity';
 
-describe('PaymentService', () => {
-  let service: PaymentService;
+@Injectable()
+export class PaymentService {
+  constructor(
+    @InjectRepository(Payment)
+    private paymentRepository: Repository<Payment>,
+  ) {}
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [PaymentService],
-    }).compile();
+  async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
+    const payment = this.paymentRepository.create(createPaymentDto);
+    return await this.paymentRepository.save(payment);
+  }
 
-    service = module.get<PaymentService>(PaymentService);
-  });
+  async findAll(): Promise<Payment[]> {
+    return await this.paymentRepository.find();
+  }
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-});
+  async findOne(id: number): Promise<Payment> {
+    const payment = await this.paymentRepository.findOne(id);
+    if (!payment) {
+      throw new NotFoundException(`Payment with ID ${id} not found`);
+    }
+    return payment;
+  }
+
+  async update(id: number, updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
+    await this.paymentRepository.update(id, updatePaymentDto);
+    const updatedPayment = await this.findOne(id);
+    return updatedPayment;
+  }
+
+  async delete(id: number): Promise<void> {
+    const result = await this.paymentRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Payment with ID ${id} not found`);
+    }
+  }
+}
