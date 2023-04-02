@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
-import { Address } from '../entities/
+import { Address } from '../address/entities/address.entity';
 
 @Controller('address')
 export class AddressController {
@@ -32,7 +32,8 @@ export class AddressController {
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<void> {
-    return this.addressService.delete(id);
+  remove(@Param('id') id: number): Promise<void> {
+    return this.addressService.remove(id);
   }
+  
 }

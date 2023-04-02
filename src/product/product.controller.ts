@@ -1,47 +1,34 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common';
-import { Users } from '../users/entities/user.entity';
-import { UserService } from '../users/users.service';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { UpdateUserDto } from '../users/dto/update-user.dto';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { ProductService } from './product.service';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
-@Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+@Controller('product')
+export class ProductController {
+  constructor(private readonly productService: ProductService) {}
+
+  @Post()
+  create(@Body() createProductDto: CreateProductDto) {
+    return this.productService.create(createProductDto);
+  }
 
   @Get()
-  findAll(): Promise<Users[]> {
-    return this.userService.findAll();
+  findAll() {
+    return this.productService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<Users> {
-    return this.userService.findOne(id);
-  }
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<Users> {
-    return this.userService.create(createUserDto);
+  findOne(@Param('id') id: string) {
+    return this.productService.findOne(+id);
   }
 
   @Put(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<Users> {
-    return await this.userService.update(id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+    return this.productService.update(+id, updateProductDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    await this.userService.delete(id);
+  remove(@Param('id') id: string) {
+    return this.productService.remove(+id);
   }
 }

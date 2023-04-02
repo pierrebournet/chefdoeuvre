@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Address } from '../../adress/entities/address.entity';
+import { Address } from '../../address/entities/address.entity';
 import { Cart } from '../../cart/entities/cart.entity';
 import { Order } from '../../order/entities/order.entity';
 import { Payment } from '../../payment/entities/payment.entity';

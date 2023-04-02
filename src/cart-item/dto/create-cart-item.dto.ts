@@ -1,6 +1,5 @@
 export class CreateCartItemDto {
-    quantity: number;
-    productId: number;
-    cartId: number;
-  }
-  
+  readonly cartId: number;
+  readonly productId: number;
+  readonly quantity: number;
+}

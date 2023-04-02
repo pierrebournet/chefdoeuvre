@@ -2,48 +2,41 @@ import {
   Controller,
   Get,
   Post,
-  Put,
-  Delete,
   Body,
+  Patch,
   Param,
-  ParseIntPipe,
+  Delete,
 } from '@nestjs/common';
-import { Order } from './entities/order.entity';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
-
-
-@Controller('orders')
+@Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @Post()
+  create(@Body() createOrderDto: CreateOrderDto) {
+    return this.orderService.create(createOrderDto);
+  }
+
   @Get()
-  findAll(): Promise<Order[]> {
+  findAll() {
     return this.orderService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<Order> {
+  findOne(@Param('id') id: number) {
     return this.orderService.findOne(id);
   }
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
-    return this.orderService.create(createOrderDto);
-  }
-
-  @Put(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateOrderDto: UpdateOrderDto,
-  ): Promise<Order> {
-    return await this.orderService.update(id, updateOrderDto);
+  @Patch(':id')
+  update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto) {
+    return this.orderService.update(id, updateOrderDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    await this.orderService.delete(id);
+  remove(@Param('id') id: number) {
+    return this.orderService.remove(id);
   }
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 
 @Injectable()
@@ -10,26 +12,29 @@ export class ProductService {
     private productRepository: Repository<Product>,
   ) {}
 
-  async create(product: Product): Promise<Product> {
-    return await this.productRepository.save(product);
+  create(createProductDto: CreateProductDto) {
+    const product = this.productRepository.create(createProductDto);
+    return this.productRepository.save(product);
   }
 
-  async findAll(): Promise<Product[]> {
-    return await this.productRepository.find();
+  findAll() {
+    return this.productRepository.find({ relations: ['category'] });
   }
 
-  async findOne(id: number): Promise<Product> {
-    return await this.productRepository.findOneOrFail({ where: { id } });
+  findOne(id: number) {
+    const options: FindOneOptions<Product> = { where: { id }, relations: ['category'] };
+    return this.productRepository.findOne(options);
   }
+  
 
-  async update(id: number, product: Product): Promise<Product> {
-    const foundProduct = await this.productRepository.findOneOrFail({ where: { id } });
-    const updatedProduct = this.productRepository.merge(foundProduct, product);
-    return await this.productRepository.save(updatedProduct);
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    await this.productRepository.update(id, updateProductDto);
+    const options: FindOneOptions<Product> = { where: { id }, relations: ['category'] };
+    return this.productRepository.findOne(options);
   }
+  
 
-  async delete(id: number): Promise<void> {
-    await this.productRepository.findOneOrFail({ where: { id } });
-    await this.productRepository.delete({ id });
+  remove(id: number) {
+    return this.productRepository.delete(id);
   }
 }

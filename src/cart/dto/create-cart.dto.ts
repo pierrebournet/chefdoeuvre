@@ -1,4 +1,3 @@
 export class CreateCartDto {
-    userId: number;
-  }
-  
+  userId: number;
+}

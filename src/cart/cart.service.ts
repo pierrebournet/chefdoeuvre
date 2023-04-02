@@ -3,6 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from './entities/cart.entity';
 import { CreateCartDto } from './dto/create-cart.dto';
+import { UpdateCartDto } from './dto/update-cart.dto';
+import { FindOneOptions } from 'typeorm';
+
 
 @Injectable()
 export class CartService {
@@ -12,19 +15,44 @@ export class CartService {
   ) {}
 
   async create(createCartDto: CreateCartDto): Promise<Cart> {
-    const cart = this.cartRepository.create(createCartDto);
-    return this.cartRepository.save(cart);
+    const cart = new Cart();
+    cart.user = { id: createCartDto.userId } as any;
+    
+    return await this.cartRepository.save(cart);
   }
 
   findAll(): Promise<Cart[]> {
-    return this.cartRepository.find();
+    return this.cartRepository.find({ relations: ['user', 'cartItems'] });
   }
 
   findOne(id: number): Promise<Cart> {
-    return this.cartRepository.findOne(id);
+    const options: FindOneOptions<Cart> = {
+      where: { id },
+      relations: ['user', 'cartItems'],
+    };
+    return this.cartRepository.findOne(options);
+  }
+  
+
+  async update(id: number, updateCartDto: UpdateCartDto): Promise<Cart> {
+    const findOneOptions: FindOneOptions<Cart> = {
+      where: { id },
+    };
+    const cart = await this.cartRepository.findOne(findOneOptions);
+  
+    if (updateCartDto.userId) {
+      cart.user = { id: updateCartDto.userId } as any;
+    }
+    await this.cartRepository.save(cart);
+  
+    const findUpdatedOptions: FindOneOptions<Cart> = {
+      where: { id },
+      relations: ['user', 'cartItems'],
+    };
+    return this.cartRepository.findOne(findUpdatedOptions);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.cartRepository.delete(id);
+  remove(id: number): Promise<void> {
+    return this.cartRepository.delete(id).then(() => {});
   }
 }
