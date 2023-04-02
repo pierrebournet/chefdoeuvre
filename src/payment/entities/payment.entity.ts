@@ -6,6 +6,7 @@ import {
     JoinColumn,
   } from 'typeorm';
   import { Order } from '../../order/entities/order.entity';
+  import { User } from '../../users/entities/user.entity';
   
   @Entity('payments')
   export class Payment {
@@ -30,5 +31,8 @@ import {
     @ManyToOne(() => Order, (order) => order.payment)
     @JoinColumn({ name: 'orderId' })
     order: Order;
+
+    @ManyToOne(() => User, (user) => user.payments)
+user: User;
   }
   
