@@ -1,44 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-  ) {}
-
   create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto);
-    return this.userRepository.save(user);
-  }
-
-  findAll() {
-    return this.userRepository.find();
-  }
-
-  findOne(id: number) {
-    const options: FindOneOptions<User> = { where: { id } };
-    return this.userRepository.findOne(options);
-  }
-
-  async findByUsername(username: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { username } });
+    const user = User.create(createUserDto as any);
+    return user.save();
   }
   
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    await this.userRepository.update(id, updateUserDto);
-    const options: FindOneOptions<User> = { where: { id } };
-    return this.userRepository.findOne(options);
+  findAll() {
+    return User.find();
   }
 
+  async findOne(id: number) {
+    return await User.findOne({ where:{ id }});
+  }
+
+  async findByUsername(username: string): Promise<User | undefined> {
+    return User.findOne({ where: { username } });
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    await User.update({ id }, updateUserDto);
+    return User.findOne({ where:{ id }});
+  }
+  
+
   remove(id: number) {
-    return this.userRepository.delete(id);
+    return User.delete(id);
   }
 }

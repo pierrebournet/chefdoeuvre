@@ -5,12 +5,13 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     ManyToOne,
+    BaseEntity,
   } from 'typeorm';
   import { Cart } from '../../cart/entities/cart.entity';
   import { Product } from '../../product/entities/product.entity';
   
   @Entity('cart_item')
-  export class CartItem {
+  export class CartItem extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
   

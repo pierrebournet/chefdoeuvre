@@ -5,11 +5,12 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     ManyToOne,
+    BaseEntity,
   } from 'typeorm';
   import { User } from '../../users/entities/user.entity';
   
   @Entity('address')
-  export class Address {
+  export class Address extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
   

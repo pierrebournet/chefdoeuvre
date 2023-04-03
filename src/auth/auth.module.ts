@@ -4,6 +4,7 @@ import { UserModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../jwt.strategy/jwt.strategy';
+import { UserService } from 'src/users/users.service';
 
 
 const SECRET_KEY = 'PierreJeab';
@@ -18,7 +19,7 @@ const SECRET_KEY = 'PierreJeab';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, UserService,],
   exports: [AuthService],
 })
 export class AuthModule {}

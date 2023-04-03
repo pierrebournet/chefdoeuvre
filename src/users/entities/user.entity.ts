@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 import { Address } from '../../address/entities/address.entity';
 import { Cart } from '../../cart/entities/cart.entity';
@@ -12,7 +13,7 @@ import { Order } from '../../order/entities/order.entity';
 import { Payment } from '../../payment/entities/payment.entity';
 
 @Entity('users')
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

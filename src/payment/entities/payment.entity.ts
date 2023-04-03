@@ -4,12 +4,13 @@ import {
     Column,
     ManyToOne,
     JoinColumn,
+    BaseEntity,
   } from 'typeorm';
   import { Order } from '../../order/entities/order.entity';
   import { User } from '../../users/entities/user.entity';
   
   @Entity('payments')
-  export class Payment {
+  export class Payment extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
   

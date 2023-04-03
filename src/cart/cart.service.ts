@@ -1,58 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Cart } from './entities/cart.entity';
+import { NotFoundException } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
-import { FindOneOptions } from 'typeorm';
-
+import { Cart } from './entities/cart.entity';
 
 @Injectable()
 export class CartService {
-  constructor(
-    @InjectRepository(Cart)
-    private cartRepository: Repository<Cart>,
-  ) {}
 
   async create(createCartDto: CreateCartDto): Promise<Cart> {
-    const cart = new Cart();
+    const cart = Cart.create();
     cart.user = { id: createCartDto.userId } as any;
     
-    return await this.cartRepository.save(cart);
+    return await cart.save();
   }
 
-  findAll(): Promise<Cart[]> {
-    return this.cartRepository.find({ relations: ['user', 'cartItems'] });
+  findAll() {
+    return Cart.find({ relations: ['user', 'cartItems'] });
   }
 
-  findOne(id: number): Promise<Cart> {
-    const options: FindOneOptions<Cart> = {
-      where: { id },
-      relations: ['user', 'cartItems'],
-    };
-    return this.cartRepository.findOne(options);
+  findOne(id: number) {
+    return Cart.findOne({ where: { id }, relations: ['user', 'cartItems'] });
   }
-  
 
   async update(id: number, updateCartDto: UpdateCartDto): Promise<Cart> {
-    const findOneOptions: FindOneOptions<Cart> = {
-      where: { id },
-    };
-    const cart = await this.cartRepository.findOne(findOneOptions);
-  
+    const cart = await Cart.findOne({ where: { id } });
+
+    if (!cart) {
+      throw new NotFoundException(`Cart with ID ${id} not found`);
+    }
+
     if (updateCartDto.userId) {
       cart.user = { id: updateCartDto.userId } as any;
     }
-    await this.cartRepository.save(cart);
-  
-    const findUpdatedOptions: FindOneOptions<Cart> = {
-      where: { id },
-      relations: ['user', 'cartItems'],
-    };
-    return this.cartRepository.findOne(findUpdatedOptions);
+    await cart.save();
+
+    return Cart.findOne({ where: { id }, relations: ['user', 'cartItems'] });
   }
 
-  remove(id: number): Promise<void> {
-    return this.cartRepository.delete(id).then(() => {});
+  async remove(id: number): Promise<void> {
+    await Cart.delete(id);
   }
 }

@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Payment } from '../../payment/entities/payment.entity';
@@ -13,7 +14,7 @@ import { Address } from '../../address/entities/address.entity';
 import { OrderLine } from '../../orderline/entities/orderline.entity';
 
 @Entity('order')
-export class Order {
+export class Order extends BaseEntity  {
   @PrimaryGeneratedColumn()
   id: number;
 
