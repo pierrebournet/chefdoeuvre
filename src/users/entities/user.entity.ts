@@ -15,32 +15,34 @@ import { Payment } from '../../payment/entities/payment.entity';
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number; // ID de l'utilisateur (clé primaire)
 
   @Column({ unique: true })
-  username: string;
+  username: string; // Nom d'utilisateur unique
 
   @Column({ unique: true })
-  email: string;
+  email: string; // Adresse e-mail unique
 
   @Column()
-  password: string;
+  password: string; // Mot de passe de l'utilisateur
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date; // Date de création de l'utilisateur
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at: Date; // Date de mise à jour de l'utilisateur
 
+  // Relations avec d'autres entités
   @OneToMany(() => Address, (address) => address.user)
-  addresses: Address[];
+  addresses: Address[]; // Liste des adresses de l'utilisateur
 
   @OneToMany(() => Cart, (cart) => cart.user)
-  carts: Cart[];
+  carts: Cart[]; // Liste des paniers de l'utilisateur
 
   @OneToMany(() => Order, (order) => order.user)
-  orders: Order[];
+  orders: Order[]; // Liste des commandes de l'utilisateur
 
   @OneToMany(() => Payment, (payment) => payment.user)
-  payments: Payment[];
+  payments: Payment[]; // Liste des paiements de l'utilisateur
 }
+

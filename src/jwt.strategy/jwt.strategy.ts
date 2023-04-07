@@ -9,13 +9,16 @@ const SECRET_KEY = 'PierreJeab';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: SECRET_KEY, // La même clé secrète que celle définie dans auth.module.ts
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extrait le JWT de l'en-tête d'autorisation
+      ignoreExpiration: false, // Vérifie l'expiration du JWT
+      secretOrKey: SECRET_KEY, // Utilise la même clé secrète que celle définie dans auth.module.ts
     });
   }
 
+  // Valide le payload du JWT
   async validate(payload: any) {
+    // Appelle validateUser avec le nom d'utilisateur et le mot de passe du payload
     return await this.authService.validateUser(payload.username, payload.password);
   }
 }
+

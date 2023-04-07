@@ -9,17 +9,17 @@ export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
   @Post()
-  create(@Body() createAddressDto: CreateAddressDto): Promise<Address> {
+  create(@Body() createAddressDto: CreateAddressDto): Promise<Address> { // Création d'une nouvelle adresse
     return this.addressService.create(createAddressDto);
   }
 
   @Get()
-  findAll(): Promise<Address[]> {
+  findAll(): Promise<Address[]> { // Récupération de toutes les adresses
     return this.addressService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Address> {
+  findOne(@Param('id') id: number): Promise<Address> { // Récupération d'une adresse par son ID
     return this.addressService.findOne(id);
   }
 
@@ -27,13 +27,12 @@ export class AddressController {
   update(
     @Param('id') id: number,
     @Body() updateAddressDto: UpdateAddressDto,
-  ): Promise<Address> {
+  ): Promise<Address> { // Mise à jour d'une adresse par son ID
     return this.addressService.update(id, updateAddressDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
+  remove(@Param('id') id: number): Promise<void> { // Suppression d'une adresse par son ID
     return this.addressService.remove(id);
   }
-  
 }

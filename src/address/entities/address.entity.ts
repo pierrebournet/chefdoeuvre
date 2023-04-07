@@ -14,7 +14,7 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @ManyToOne(() => User, (user) => user.addresses)
+    @ManyToOne(() => User, (user) => user.addresses) // Relation ManyToOne avec la table User
     user: User;
   
     @Column()
@@ -29,10 +29,12 @@ import {
     @Column()
     country: string;
   
-    @CreateDateColumn()
+    @CreateDateColumn() // Date de création de l'adresse
     created_at: Date;
   
-    @UpdateDateColumn()
+    @UpdateDateColumn() // Date de mise à jour de l'adresse
     updated_at: Date;
   }
+  
+
   

@@ -15,11 +15,14 @@ const SECRET_KEY = 'PierreJeab';
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'SECRET_KEY', // Remplacez par une clé secrète forte
+      secret: 'SECRET_KEY', //  a remplacez par une clé secrète forte
       signOptions: { expiresIn: '1h' },
-    }),
+    }),// le jwt expire apres 1h
   ],
   providers: [AuthService, UserService,],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule {
+   // Ce module importe les modules nécessaires, enregistre le service JWT
+  // avec la clé secrète et les options de signature et exporte le service d'authentification
+}

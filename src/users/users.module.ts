@@ -5,8 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
-  controllers: [UserController],
-  providers: [UserService],
+  imports: [TypeOrmModule.forFeature([User])], // Importation du module TypeOrm avec l'entité User
+  controllers: [UserController], // Importation du contrôleur UserController
+  providers: [UserService], // Importation du service UserService
 })
-export class UserModule {}
+export class UserModule {} // Exportation du module UserModule
+
