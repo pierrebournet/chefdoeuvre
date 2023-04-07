@@ -13,13 +13,18 @@ export class ProductController {
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  findAllWithExternal() {
+    return this.productService.findAllWithExternal();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productService.findOne(+id);
+  }
+
+  @Get('configurations/:id')
+  getConfigurations(@Param('id') id: string) {
+    return this.productService.getProductConfigurations(+id);
   }
 
   @Put(':id')
@@ -30,5 +35,11 @@ export class ProductController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productService.remove(+id);
+  }
+
+  // Route pour récupérer les produits externes
+  @Get('external')
+  async getExternalProducts() {
+    return await this.productService.getExternalProducts();
   }
 }
