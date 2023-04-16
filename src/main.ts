@@ -1,20 +1,30 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Activer les validations globales
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,//lorsqu'elle est définie sur true, les propriétés qui ne font pas partie du DTO sont automatiquement supprimées de l'objet.
-      forbidNonWhitelisted: true,//lorsqu'elle est définie sur true, une exception est lancée si des propriétés non autorisées sont fournies.
-      transform: true,//lorsqu'elle est définie sur true, elle transforme automatiquement les objets reçus en instances de classes correspondant à vos DTO.
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
-  
-  app.enableCors()
+
+  // Configuration de Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Marketplace API')
+    .setDescription("L'API pour le Marketplace")
+    .setVersion('1.0')
+    .addTag('marketplace')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  app.enableCors();
   await app.listen(3000);
 }
 
