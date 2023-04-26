@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -9,25 +10,31 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-   // Valide un utilisateur en fonction du nom d'utilisateur et du mot de passe
-   async validateUser(username: string, password: string): Promise<any> {
-    // Recherche l'utilisateur par nom d'utilisateur
-    const user = await this.userService.findByUsername(username);
-    // Si l'utilisateur existe et que le mot de passe correspond
-    if (user && user.password === password) {
-      // Renvoie l'utilisateur sans le mot de passe
-      const { password, ...result } = user;
-      return result;
+  async validateUser(username: string, password: string): Promise<any> {
+    if (!username || !password) {
+      return null;
     }
+
+    const user = await this.userService.findByUsername(username);
+    console.log('User found:', user); // Log added
+
+    if (user && user.password) {
+      const passwordMatches = await bcrypt.compare(password, user.password);
+      console.log('Password matches:', passwordMatches); // Log added
+
+      if (passwordMatches) {
+        const { password, ...result } = user;
+        return result;
+      }
+    }
+
     return null;
   }
 
-  // Connecte un utilisateur et crée un JWT
   async login(user: any) {
-    // Crée le payload contenant le nom d'utilisateur et l'ID de l'utilisateur
-    const payload = { username: user.username, sub: user.userId };
-    // Retourne le JWT signé
+    const payload = { username: user.username, sub: user.userId, isAdmin: user.isAdmin };
     return {
+      ...user,
       access_token: this.jwtService.sign(payload),
     };
   }

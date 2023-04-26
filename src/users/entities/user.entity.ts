@@ -1,3 +1,5 @@
+// src/users/entities/user.entity.ts
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -26,6 +28,9 @@ export class User extends BaseEntity {
   @Column()
   password: string; // Mot de passe de l'utilisateur
 
+  @Column({ default: false })
+  isAdmin: boolean; // Ajout de la colonne 'isAdmin'
+
   @CreateDateColumn()
   created_at: Date; // Date de création de l'utilisateur
 
@@ -45,4 +50,3 @@ export class User extends BaseEntity {
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[]; // Liste des paiements de l'utilisateur
 }
-

@@ -1,6 +1,20 @@
-export class CreateUserDto {
-  username: string; // Nom d'utilisateur
-  email: string; // Adresse e-mail
-  password: string; // Mot de passe
-}
+import { IsNotEmpty, IsString, IsEmail, IsBoolean, Length } from 'class-validator';
 
+export class CreateUserDto {
+  @IsNotEmpty()
+  @IsString()
+  @Length(3, 50)
+  username: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(8, 100)
+  password: string;
+
+  @IsBoolean()
+  isAdmin: boolean;
+}
