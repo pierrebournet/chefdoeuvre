@@ -26,11 +26,11 @@ export class Product extends BaseEntity {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
-  @Column()
-  quantity: number;
+ // @Column()
+  //quantity: number;
 
   @Column({ nullable: true })
-  image_url: string;
+  imageUrl: string;
 
   @CreateDateColumn()
   created_at: Date;
