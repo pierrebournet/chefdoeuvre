@@ -20,7 +20,7 @@ export class Category extends BaseEntity {
   @Column({ nullable: true })
   description: string;
 
-  @OneToMany(() => Product, (product) => product.category)
+  @OneToMany(() => Product, (product) => product.categoryId)
   products: Product[];
 
   @CreateDateColumn()

@@ -15,7 +15,8 @@ export class Product extends BaseEntity {
   id: number;
 
   @ManyToOne(() => Category, (category) => category.products)
-  category: Category;
+  @Column({ nullable: false }) // Rendre la colonne categoryId obligatoire
+  categoryId: number;
 
   @Column()
   name: string;
@@ -26,7 +27,7 @@ export class Product extends BaseEntity {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
- // @Column()
+  //@Column()
   //quantity: number;
 
   @Column({ nullable: true })
