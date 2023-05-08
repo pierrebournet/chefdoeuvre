@@ -15,7 +15,7 @@ export class Product extends BaseEntity {
   id: number;
 
   @ManyToOne(() => Category, (category) => category.products)
-  @Column({ nullable: false }) // Rendre la colonne categoryId obligatoire
+  @Column({ nullable: true }) // Rendre la colonne categoryId obligatoire
   categoryId: number;
 
   @Column()

@@ -21,13 +21,14 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
   }
 
   @Get()
   findAll(@Query('search') search: string) {
+    console.log('fetch products controler')
     return this.productService.findAll(search);
   }
 
@@ -37,14 +38,15 @@ export class ProductController {
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productService.update(+id, updateProductDto);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+    console.log('removeProduct', id)
+    return this.productService.remove(Number(id));
   }
 }

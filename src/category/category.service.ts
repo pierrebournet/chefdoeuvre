@@ -2,17 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
+import { createCategorie } from 'src/sripts/createCategories';
 
 @Injectable()
 export class CategoryService {
 
-  create(createCategoryDto: CreateCategoryDto) {
-    const category = Category.create({ ...createCategoryDto } as Category);
+  async create(createCategoryDto: CreateCategoryDto) {
+    const category = await Category.create({ ...createCategoryDto } as Category);
     return category.save();
   }
 
-  findAll() {
-    return Category.find();
+  async findAll() {
+    let categories = await Category.find();
+    if (categories.length === 4 ) {
+      return categories;
+    } else {
+      console.log( 'create new CAt ')
+      createCategorie()
+      categories = await Category.find();
+      return categories
+    }
   }
 
   findOne(id: number) {

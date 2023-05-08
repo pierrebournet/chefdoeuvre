@@ -6,6 +6,7 @@ import { Product } from './entities/product.entity';
 @Injectable()
 export class ProductService {
   create(createProductDto: CreateProductDto) {
+    console.log('createProduct', createProductDto)
     const product = Product.create(createProductDto as any);
     return product.save();
   }
@@ -30,6 +31,7 @@ export class ProductService {
   }
 
   remove(id: number) {
+    console.log('deleteProduct', id)
     return Product.delete(id);
   }
 }
